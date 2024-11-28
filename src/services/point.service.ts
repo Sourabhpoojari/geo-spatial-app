@@ -24,7 +24,6 @@ export class PointService {
         },
         address: pointBody.address,
       });
-      console.log(point);
 
       return await this.pointRepository.save(point);
     } catch (error: any) {
@@ -48,8 +47,7 @@ export class PointService {
       throw getInternalServerTmfError(error.message);
     }
   }
-
-  public async updatePoint(id: number, pointBody: PointBody) {
+  public async getPointsDataById(id: number) {
     try {
       const point = await this.pointRepository.findOneBy({ id });
       if (!point) {
@@ -58,6 +56,19 @@ export class PointService {
         );
         throw getNotFoundTmfError(`Point-data not found with id: ${id}`);
       }
+      return point;
+    } catch (error: any) {
+      if (error instanceof ErrorException) throw error;
+      console.error(
+        `${APP_INSTANCE_ID}: ${fileName} -> Error while fetching point-data: ${error}`
+      );
+      throw getInternalServerTmfError(error.message);
+    }
+  }
+
+  public async updatePoint(id: number, pointBody: PointBody) {
+    try {
+      const point = await this.getPointsDataById(id);
       point.name = pointBody.name;
       point.cordinates.coordinates = [pointBody.longitude, pointBody.latitude];
       point.address = pointBody.address;
