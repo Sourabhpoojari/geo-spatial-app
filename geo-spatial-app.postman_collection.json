@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "3c96edea-3775-4b93-80bf-20d013d5b8fa",
+		"name": "geo-spatial-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11206247"
+	},
+	"item": [
+		{
+			"name": "create point data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Aurobindo Marg 3\",\r\n    \"longitude\": 12.932424,\r\n    \"latitude\": 77.582182,\r\n    \"address\": \"Jayanagar 3rd Block, Jayanagar, Bengaluru, Karnataka 560041\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/point",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all point data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/point",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update point data",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Aurobindo Marg 3\",\r\n    \"longitude\": 12.932424,\r\n    \"latitude\": 77.582182,\r\n    \"address\": \"Jayanagar 3rd Block, Jayanagar, Bengaluru, Karnataka 560041\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/point/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"point",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
