@@ -41,5 +41,6 @@ router.put(
 );
 
 router.get("", pointController.getAllPointData);
+router.get("/:id", pointController.getPointDataById);
 
 export default router;

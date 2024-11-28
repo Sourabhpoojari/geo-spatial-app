@@ -9,16 +9,18 @@ import {
 import { validationResult } from "express-validator";
 import { pointService } from "../services/point.service";
 import { PointBody } from "../types/point.type";
+import { PolygonBody } from "../types/polygon.type";
+import { polygonService } from "../services/polygon.service";
 
 const APP_INSTANCE_ID = codeInstance.getInstance();
 
-const fileName = "Point-Controller";
+const fileName = "Polygon-Controller";
 
-export class PointController {
-  public async storePointData(req: Request, res: Response) {
+export class PolygonController {
+  public async storePolygonData(req: Request, res: Response) {
     try {
       console.info(
-        `${APP_INSTANCE_ID}: ${fileName} -> Got Create Spatial Point Request with info ${JSON.stringify(
+        `${APP_INSTANCE_ID}: ${fileName} -> Got Create Spatial Polygon Request with info ${JSON.stringify(
           req.body
         )}`
       );
@@ -33,24 +35,23 @@ export class PointController {
         );
         throw getBadRequestError(message);
       }
-      const { name, latitude, longitude, address } = req.body;
+      const { title, coordinates, description } = req.body;
 
-      const data: PointBody = {
-        name,
-        latitude,
-        longitude,
-        address,
+      const data: PolygonBody = {
+        title,
+        coordinates,
+        description,
       };
-      const point = await pointService.createPoint(data);
-      const message = `Spatial point data created successfully!!`;
+      const polygon = await polygonService.createPolygon(data);
+      const message = `Spatial polygon data created successfully!!`;
       console.debug(
         `${APP_INSTANCE_ID}: ${fileName} -> ${message} : ${JSON.stringify(
-          point
+          polygon
         )}`
       );
       return res
         .status(StatusCodes.CREATED)
-        .json({ status: StatusCodes.CREATED, data: point, message });
+        .json({ status: StatusCodes.CREATED, data: polygon, message });
     } catch (error) {
       if (error instanceof ErrorException)
         return res.status(parseInt(error.status)).send(error);
@@ -62,21 +63,21 @@ export class PointController {
     }
   }
 
-  public async getAllPointData(_req: Request, res: Response) {
+  public async getAllpolygonData(_req: Request, res: Response) {
     try {
       console.info(
-        `${APP_INSTANCE_ID}: ${fileName} -> Getting all Spatial Point Data`
+        `${APP_INSTANCE_ID}: ${fileName} -> Getting all Spatial polygon Data`
       );
-      const points = await pointService.getPointsData();
-      const message = `Spatial point data fetched successfully!!`;
+      const polygons = await polygonService.getPolygonData();
+      const message = `Spatial polygon data fetched successfully!!`;
       console.debug(
         `${APP_INSTANCE_ID}: ${fileName} -> ${message} : ${JSON.stringify(
-          points
+          polygons
         )}`
       );
       return res
         .status(StatusCodes.OK)
-        .json({ status: StatusCodes.OK, data: points, message });
+        .json({ status: StatusCodes.OK, data: polygons, message });
     } catch (error) {
       if (error instanceof ErrorException)
         return res.status(parseInt(error.status)).send(error);
@@ -87,23 +88,23 @@ export class PointController {
         .send(getInternalServerTmfError(error as any));
     }
   }
-  public async getPointDataById(req: Request, res: Response) {
+  public async getPolygonDataById(req: Request, res: Response) {
     try {
       console.info(
-        `${APP_INSTANCE_ID}: ${fileName} -> Getting all Spatial Point Data with id: ${req.params.id}`
+        `${APP_INSTANCE_ID}: ${fileName} -> Getting Spatial polygon Data with id: ${req.params.id}`
       );
-      const point = await pointService.getPointsDataById(
+      const polygon = await polygonService.getPolygonDataById(
         parseInt(req.params.id)
       );
-      const message = `Spatial point data fetched successfully!!`;
+      const message = `Spatial polygon data fetched successfully!!`;
       console.debug(
         `${APP_INSTANCE_ID}: ${fileName} -> ${message} : ${JSON.stringify(
-          point
+          polygon
         )}`
       );
       return res
         .status(StatusCodes.OK)
-        .json({ status: StatusCodes.OK, data: point, message });
+        .json({ status: StatusCodes.OK, data: polygon, message });
     } catch (error) {
       if (error instanceof ErrorException)
         return res.status(parseInt(error.status)).send(error);
@@ -115,10 +116,10 @@ export class PointController {
     }
   }
 
-  public async updatePointData(req: Request, res: Response) {
+  public async updatePolygonData(req: Request, res: Response) {
     try {
       console.info(
-        `${APP_INSTANCE_ID}: ${fileName} -> Got update point data request for id: ${
+        `${APP_INSTANCE_ID}: ${fileName} -> Got update polygon data request for id: ${
           req.params.id
         } with body: ${JSON.stringify(req.body)}`
       );
@@ -133,27 +134,27 @@ export class PointController {
         );
         throw getBadRequestError(message);
       }
-      const { name, latitude, longitude, address } = req.body;
 
-      const data: PointBody = {
-        name,
-        latitude,
-        longitude,
-        address,
+      const { title, coordinates, description } = req.body;
+
+      const data: PolygonBody = {
+        title,
+        coordinates,
+        description,
       };
-      const point = await pointService.updatePoint(
+      const polygon = await polygonService.updatePolygon(
         parseInt(req.params.id),
         data
       );
-      const message = `Spatial point data updated successfully!!`;
+      const message = `Spatial polygon data updated successfully!!`;
       console.debug(
         `${APP_INSTANCE_ID}: ${fileName} -> ${message} : ${JSON.stringify(
-          point
+          polygon
         )}`
       );
       return res
         .status(StatusCodes.OK)
-        .json({ status: StatusCodes.OK, data: point, message });
+        .json({ status: StatusCodes.OK, data: polygon, message });
     } catch (error) {
       if (error instanceof ErrorException)
         return res.status(parseInt(error.status)).send(error);
@@ -166,4 +167,4 @@ export class PointController {
   }
 }
 
-export const pointController = new PointController();
+export const polygonController = new PolygonController();
